@@ -1,3 +1,18 @@
+<?php
+include("connect.php");
+//倒序查询msg中的内容
+$sql = "SELECT * FROM msg ORDER BY id DESC";
+$mysqli_result = $db->query($sql);
+if($mysqli_result === false){
+	echo "SQL错误";
+	exit;
+}
+$rows = [];
+while( $row = $mysqli_result->fetch_array( MYSQLI_ASSOC )){
+	$rows[]	= $row;
+}
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,36 +32,26 @@
 			</form>
 		</div>
 		
+		<?php
+		foreach ($rows as $row) {
+			# code...
+		?>
 
 		<!-- 查看留言 -->
 		<div class="msg">
 			<div class="info">
-				<span class="user">用户名</span>
-				<span class="time">2017-1-1 11:11:11</span>
+				<span class="user"><?php echo $row['user']?></span>
+				<span class="time"><?php echo date("Y-m-d H:i:s",$row['intime'])?></span>
 			</div>
 			<div class="content">
-				我是留言，我是留言，我是留言，我是留言；
+				<?php echo $row['content'];?>
 			</div>
 		</div>
-		<div class="msg">
-			<div class="info">
-				<span class="user">用户名</span>
-				<span class="time">2017-1-1 11:11:11</span>
-			</div>
-			<div class="content">
-				我是留言，我是留言，我是留言，我是留言；
-			</div>
-		</div>
-		<div class="msg">
-			<div class="info">
-				<span class="user">用户名</span>
-				<span class="time">2017-1-1 11:11:11</span>
-			</div>
-			<div class="content">
-				我是留言，我是留言，我是留言，我是留言；
-			</div>
-		</div>
-		
+
+		<?php
+		}
+		?>
 	<div/>
 </body>
 </html>
+
